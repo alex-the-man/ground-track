@@ -1,13 +1,14 @@
+require("file-loader?name=[name].[ext]!./index.html")
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { j2000, unixTimestampToJulianDate } from "./JulianUtils";
 import { radToDeg, normalizeAngle } from "./MathUtils";
+import Map from "./Map";
 import Moon from "./Moon";
 
 import LatLngLiteral = google.maps.LatLngLiteral
-
-import Map from "./Map";
 
 const App = () => {
   var text = [];

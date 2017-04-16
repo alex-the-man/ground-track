@@ -9,7 +9,7 @@ var config = {
   },
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js", "html"]
   },
 
   module: {
