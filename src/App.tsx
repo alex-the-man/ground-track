@@ -22,6 +22,7 @@ const App = () => {
     var gecPos = moon.pos(jd);
     var eciPos = gecPos.toECI();
     var ecefPos = eciPos.eciToECEF(jd);
+    // TODO Project ECEF to WGS84.
 
     // console.log(jd, radToDeg(gecPos.lon) % 360, normalizeAngle(radToDeg(gecPos.lat)));
     line.push({
