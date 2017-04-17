@@ -1,32 +1,63 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+// Can't do import without .d.ts. See https://github.com/Microsoft/TypeScript/issues/15031
+const PropTypes = require("prop-types");
+
 import EquatorialCoordinate from "./EquatorialCoordinate"
 
+import GMap = google.maps;
+
 interface MapProps {
-  lines: Array<Array<google.maps.LatLngLiteral>>;
 }
 
 interface MapState {
+  map: GMap.Map
+}
+
+interface MapContext {
+  map: GMap.Map
 }
 
 export default class Map extends React.Component<MapProps, MapState> {
-  private map: google.maps.Map;
+  constructor(props?: MapProps, context?: any) {
+    super(props, context);
+
+    this.state = {
+      map: null
+    };
+  }
+
+  static childContextTypes = {
+    map: PropTypes.any
+  }
 
   componentDidMount() {
     var mapOptions = {
-      center: new google.maps.LatLng(0, 0),
+      center: new GMap.LatLng(0, 0),
+      mapTypeId: GMap.MapTypeId.SATELLITE,
       zoom: 2
     };
-    this.map = new google.maps.Map(ReactDOM.findDOMNode(this.refs.mapContainer), mapOptions);
-    var line = new google.maps.Polyline({
-      path: this.props.lines[0]
+    this.setState({
+      map: new GMap.Map(ReactDOM.findDOMNode(this.refs.mapContainer), mapOptions)
     });
+  }
 
-    line.setMap(this.map);
+  componentWillUnmount() {
+    console.warn("componentWillUnmount() on <Map> is not supported.");
+  }
+
+  getChildContext(): MapContext {
+    return {
+      map: this.state.map
+    }
   }
 
   render() {
-    return <div ref="mapContainer" style={{height: "100%"}}></div>;
+    return (
+      <div ref="mapContainer" style={{height: "100%"}}>
+        { this.state.map != null ? this.props.children : null }
+      </div>
+    );
   }
 }
