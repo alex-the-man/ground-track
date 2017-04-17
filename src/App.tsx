@@ -8,6 +8,7 @@ import { j2000, unixTimestampToJulianDate } from "./JulianUtils";
 import Moon from "./Moon";
 import Map from "./Map";
 import MapPolyline from "./MapPolyline";
+import MapMarker from "./MapMarker";
 
 import LatLngLiteral = google.maps.LatLngLiteral
 
@@ -16,6 +17,7 @@ const App = () => {
 
   var pastLine: Array<LatLngLiteral> = [];
   var futureLine: Array<LatLngLiteral> = [];
+  var moonPos: LatLngLiteral = null;
 
   // var nowJd = JulianUtils.j2000;
   // var nowJd = 2457858.5; // 2457858.55833;// 2457858.55384;
@@ -36,6 +38,7 @@ const App = () => {
     if (i == 0) {
       pastLine.push(latLng);
       futureLine.push(latLng);
+      moonPos = latLng;
     } else if (i > 0) {
       futureLine.push(latLng);
     } else {
@@ -46,6 +49,7 @@ const App = () => {
   return (
     <Map>
       <MapPolyline latLngs={pastLine}/>
+      <MapMarker pos={moonPos} title={moonPos.lat.toString() + ", " + moonPos.lng.toString()}/>
       <MapPolyline latLngs={futureLine} dashedLine={true}/>
     </Map>
   );

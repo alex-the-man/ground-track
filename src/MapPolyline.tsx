@@ -8,56 +8,53 @@ const PropTypes = require("prop-types");
 import GMap = google.maps;
 
 interface MapPolylineProps {
-  latLngs: Array<GMap.LatLngLiteral>;
   dashedLine?: boolean;
+  latLngs: Array<GMap.LatLngLiteral>;
 }
 
-interface MapPolylineState {
-}
-
-export default class MapPolyline extends React.Component<MapPolylineProps, MapPolylineState> {
+export default class MapPolyline extends React.Component<MapPolylineProps, undefined> {
   static contextTypes = {
     map: PropTypes.any
   }
 
   static defaultProps: MapPolylineProps = {
-    latLngs: null,
-    dashedLine: false
+    dashedLine: false,
+    latLngs: null
   }
 
   static propTypes = {
-    latLngs: PropTypes.any.isRequired,
-    dashedLine: PropTypes.bool
+    dashedLine: PropTypes.bool,
+    latLngs: PropTypes.any.isRequired
   }
 
   private polyline: GMap.Polyline;
 
   componentDidMount() {
     var ploylineOptions: GMap.PolylineOptions = {
-      strokeColor: "#FFFFFF",
-      path: this.props.latLngs
+      map: this.context.map,
+      path: this.props.latLngs,
+      strokeColor: "#FFFFFF"
     };
 
     if (this.props.dashedLine) {
       var lineSymbol = {
-        path: "M 0,-5 0,1",
+        strokeWeight: 3,
         strokeOpacity: 1,
-        strokeWeight: 3
+        path: "M 0,-5 0,1"
       };
 
        _.extend(ploylineOptions, {
-        strokeOpacity: 0,
-        strokeWeight: 1,
         icons: [{
           icon: lineSymbol,
           offset: "0",
           repeat: "20px"
         }],
+        strokeOpacity: 0,
+        strokeWeight: 1
       });
     }
 
     this.polyline = new GMap.Polyline(ploylineOptions);
-    this.polyline.setMap(this.context.map);
   }
 
   componentWillUnmount() {

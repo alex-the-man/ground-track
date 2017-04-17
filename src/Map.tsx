@@ -8,9 +8,6 @@ import EquatorialCoordinate from "./EquatorialCoordinate"
 
 import GMap = google.maps;
 
-interface MapProps {
-}
-
 interface MapState {
   map: GMap.Map
 }
@@ -19,8 +16,8 @@ interface MapContext {
   map: GMap.Map
 }
 
-export default class Map extends React.Component<MapProps, MapState> {
-  constructor(props?: MapProps, context?: any) {
+export default class Map extends React.Component<undefined, MapState> {
+  constructor(props?: any, context?: any) {
     super(props, context);
 
     this.state = {
