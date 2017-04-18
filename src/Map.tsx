@@ -30,7 +30,7 @@ export default class Map extends React.Component<undefined, MapState> {
   }
 
   componentDidMount() {
-    var mapOptions = {
+    const mapOptions = {
       center: new GMap.LatLng(0, 0),
       mapTypeId: GMap.MapTypeId.SATELLITE,
       zoom: 2

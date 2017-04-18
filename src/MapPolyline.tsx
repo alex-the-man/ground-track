@@ -8,60 +8,83 @@ const PropTypes = require("prop-types");
 import GMap = google.maps;
 
 interface MapPolylineProps {
+  color?: string;
   dashedLine?: boolean;
   latLngs: Array<GMap.LatLngLiteral>;
+  opacity?: number;
 }
 
-export default class MapPolyline extends React.Component<MapPolylineProps, undefined> {
+interface MapPolylineState {
+  polyline: GMap.Polyline;
+}
+
+export default class MapPolyline extends React.Component<MapPolylineProps, MapPolylineState> {
   static contextTypes = {
     map: PropTypes.any
   }
 
   static defaultProps: MapPolylineProps = {
+    color: "#FFF",
     dashedLine: false,
-    latLngs: null
+    latLngs: null,
+    opacity: 1
   }
 
   static propTypes = {
+    color: PropTypes.string,
     dashedLine: PropTypes.bool,
-    latLngs: PropTypes.any.isRequired
+    latLngs: PropTypes.any.isRequired,
+    opacity: PropTypes.number,
   }
 
-  private polyline: GMap.Polyline;
+  constructor(props?: any, context?: any) {
+    super(props, context);
+
+    this.state = {
+      polyline: null
+    }
+  }
 
   componentDidMount() {
-    var ploylineOptions: GMap.PolylineOptions = {
-      map: this.context.map,
-      path: this.props.latLngs,
-      strokeColor: "#FFFFFF"
-    };
-
-    if (this.props.dashedLine) {
-      var lineSymbol = {
-        strokeWeight: 3,
-        strokeOpacity: 1,
-        path: "M 0,-5 0,5"
-      };
-
-       _.extend(ploylineOptions, {
-        icons: [{
-          icon: lineSymbol,
-          offset: "0",
-          repeat: "20px"
-        }],
-        strokeOpacity: 0,
-        strokeWeight: 1
-      });
-    }
-
-    this.polyline = new GMap.Polyline(ploylineOptions);
+    this.setState({ 
+      polyline: new GMap.Polyline({
+        map: this.context.map,
+        strokeColor: "#FFF"
+      })
+    });
   }
 
   componentWillUnmount() {
-    this.polyline.setMap(null);
+    this.state.polyline.setMap(null);
   }
 
   render(): any {
+    if (this.state.polyline) {
+      var polylineOptions: GMap.PolylineOptions = {
+        path: this.props.latLngs,
+        strokeColor: this.props.color,        
+        strokeOpacity: this.props.opacity
+      };
+
+      if (this.props.dashedLine) {
+        const lineSymbol = {
+          strokeWeight: 3,
+          strokeOpacity: this.props.opacity,
+          path: "M 0,-5 0,5"
+        };
+
+        _.extend(polylineOptions, {
+          icons: [{
+            icon: lineSymbol,
+            offset: "0",
+            repeat: "20px"
+          }],
+          strokeOpacity: 0,
+          strokeWeight: 1
+        });
+      }
+      this.state.polyline.setOptions(polylineOptions);
+    }
     return null;
   }
 }

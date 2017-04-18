@@ -24,29 +24,29 @@ const dist1 = -20905;
 
 export default class Moon {
   private L(jd: number): number {
-    var jd2000 = j2000jd(jd);
+    const jd2000 = j2000jd(jd);
     return l0 + l1 * jd2000 + l2 * jd2000 * jd2000;
   }
   
   private M(jd: number): number {
-    var jd2000 = j2000jd(jd);
+    const jd2000 = j2000jd(jd);
     return m0 + m1 * jd2000 + m2 * jd2000 * jd2000;
   }
   
   private F(jd: number): number {
-    var jd2000 = j2000jd(jd);
+    const jd2000 = j2000jd(jd);
     return f0 + f1 * jd2000 + f2 * jd2000 * jd2000;
   }
 
   // Return position in geocentric ecliptic coordinates.
   pos(jd: number): EclipticSphericalCoordinate {
-    var l = this.L(jd);
-    var m = this.M(jd);
-    var f = this.F(jd);
+    const l = this.L(jd);
+    const m = this.M(jd);
+    const f = this.F(jd);
 
-    var lon = l + lon1 * Math.sin(m);
-    var lat = lat1 * Math.sin(f);
-    var dist = dist0 + dist1 * Math.cos(m);
+    const lon = l + lon1 * Math.sin(m);
+    const lat = lat1 * Math.sin(f);
+    const dist = dist0 + dist1 * Math.cos(m);
     return new EclipticSphericalCoordinate(lon, lat, dist);
   }
 }

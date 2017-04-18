@@ -12,26 +12,43 @@ interface MapMarkerProps {
   title: string;
 }
 
-export default class MapMarker extends React.Component<MapMarkerProps, undefined> {
+interface MapMarkeState {
+  marker: GMap.Marker;
+}
+
+export default class MapMarker extends React.Component<MapMarkerProps, MapMarkeState> {
   static contextTypes = {
     map: PropTypes.any
   }
 
-  private marker: GMap.Marker;
+  constructor(props?: any, context?: any) {
+    super(props, context);
+
+    this.state = {
+      marker: null
+    }
+  }
 
   componentDidMount() {
-    this.marker = new GMap.Marker({
-      map: this.context.map,
-      position: this.props.pos,
-      title: this.props.title
+    var marker = new GMap.Marker();
+    marker.setMap(this.context.map);
+
+    this.setState({
+      marker: marker
     });
   }
 
   componentWillUnmount() {
-    this.marker.setMap(null);
+    this.state.marker.setMap(null);
   }
 
   render(): any {
+    if (this.state.marker) {
+      this.state.marker.setOptions({
+        position: this.props.pos,
+        title: this.props.title
+      });
+    }
     return null;
   }
 }

@@ -16,11 +16,11 @@ export default class EclipticSphericalCoordinate {
 
   // Assume lon/lat/dist are geocentric.
   toECI(): EquatorialCoordinate {
-    var e = earthObliquity;
-    var lon = this.lon, lat = this.lat;
+    const e = earthObliquity;
+    const lon = this.lon, lat = this.lat;
 
-    var ra = Math.atan2(Math.sin(lon) * Math.cos(e) - Math.tan(lat) * Math.sin(e), Math.cos(lon));
-    var dec = Math.asin(Math.sin(lat) * Math.cos(e) + Math.cos(lat) * Math.sin(e) * Math.sin(lon));
+    const ra = Math.atan2(Math.sin(lon) * Math.cos(e) - Math.tan(lat) * Math.sin(e), Math.cos(lon));
+    const dec = Math.asin(Math.sin(lat) * Math.cos(e) + Math.cos(lat) * Math.sin(e) * Math.sin(lon));
 
     return new EquatorialCoordinate(ra, dec, this.r);
   }

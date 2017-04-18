@@ -18,19 +18,19 @@ class GroundTrack {
   moonPos: LatLngLiteral;
 }
 
-function calculateGroundTrack(moon: Moon, midpointJd: number, period: number, segments: number): GroundTrack {
-  var midpoint = Math.floor(segments / 2);  
-  var gt: GroundTrack = new GroundTrack();
+function calculateGroundTrack(moon: Moon, midpointJd: number, periodInJulianDay: number, numSamples: number): GroundTrack {
+  const midpoint = Math.floor(numSamples / 2);
+  const gt: GroundTrack = new GroundTrack();
 
-  for (var i = 0; i <= segments; i++) {
-    var jd = (i - midpoint) / segments * period + midpointJd;
-    var gecPos = moon.pos(jd);
-    var eciPos = gecPos.toECI();
-    var ecefPos = eciPos.eciToECEF(jd);
+  for (var i = 0; i <= numSamples; i++) {
+    const jd = (i - midpoint) / numSamples * periodInJulianDay + midpointJd;
+    const gecPos = moon.pos(jd);
+    const eciPos = gecPos.toECI();
+    const ecefPos = eciPos.eciToECEF(jd);
     // TODO Project ECEF to WGS84.
 
     // console.log(jd, radToDeg(gecPos.lon) % 360, normalizeAngle(radToDeg(gecPos.lat)));
-    var latLng = {
+    const latLng = {
       lng: normalizeAngle(radToDeg(ecefPos.ra)), 
       lat: radToDeg(ecefPos.dec)
     };
@@ -48,24 +48,62 @@ function calculateGroundTrack(moon: Moon, midpointJd: number, period: number, se
   return gt;
 }
 
-const App = () => {
-  var moon = new Moon();
+interface AppState {
+  now: number
+}
 
-  // var nowJd = JulianUtils.j2000;
-  // var nowJd = 2457858.5; // 2457858.55833;// 2457858.55384;
-  var nowJd = unixTimestampToJulianDate(Date.now() / 1000);
-  var period = 1; // A Julian day.
-  var segments = 24; // A sample point per hour.
+class App extends React.Component<undefined, AppState> {
+  private moon = new Moon();
+  private timerId = -1;
 
-  var gt = calculateGroundTrack(moon, nowJd, period, segments);
+  constructor(props?: any, context?: any) {
+    super(props, context);
 
-  return (
-    <Map>
-      <MapPolyline latLngs={gt.pastLine}/>
-      <MapMarker pos={gt.moonPos} title={gt.moonPos.lat.toString() + ", " + gt.moonPos.lng.toString()}/>
-      <MapPolyline latLngs={gt.futureLine} dashedLine={true}/>
-    </Map>
-  );
-};
+    this.state = {
+      now: Date.now()
+    }
+  }
+
+  componentDidMount() {
+    this.timerId = window.setInterval(
+      () => {
+        this.setState({
+          now: this.state.now + 60 * 1000 * 60
+        });
+      }, 100);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.timerId);
+  }
+
+  render(): any {
+    // var nowJd = JulianUtils.j2000;
+    // var nowJd = 2457858.5; // 2457858.55833;// 2457858.55384;
+    const nowJd = unixTimestampToJulianDate(this.state.now / 1000);
+    const periodInJulianDay = 2;
+
+    const gt = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 24);
+
+    const infoBoxStyle: React.CSSProperties = {
+      background: "#CCC",
+      opacity: 0.7,
+      padding: "1px",
+      position: "absolute",
+      right: "0px",
+      top: "0px",
+      zIndex: 10
+    };
+
+    return (
+      <Map>
+        <div style={infoBoxStyle}>{ new Date(this.state.now).toUTCString() }</div>
+        <MapPolyline latLngs={gt.pastLine} color="#AAA" opacity={0.9}/>
+        <MapMarker pos={gt.moonPos} title={gt.moonPos.lat.toString() + ", " + gt.moonPos.lng.toString()}/>
+        <MapPolyline latLngs={gt.futureLine} opacity={0.9}/>
+      </Map>
+    );
+  }
+}
 
 ReactDOM.render(<App/>, document.getElementById("app"));

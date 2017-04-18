@@ -19,7 +19,7 @@ export default class EquatorialCoordinate {
 
   // Assume current ra & dec are in ECI.
   eciToECEF(jd: number): EquatorialCoordinate {
-    var ra = this.ra - degToRad(greenwichSideralTime(jd) * 15);
+    const ra = this.ra - degToRad(greenwichSideralTime(jd) * 15);
     return new EquatorialCoordinate(ra, this.dec, this.r);
   }
 }
