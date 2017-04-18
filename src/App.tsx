@@ -29,13 +29,9 @@ function calculateGroundTrack(moon: Moon, midpointJd: number, periodInJulianDay:
     const gecPos = moon.pos(jd);
     const eciPos = gecPos.toECI();
     const ecefPos = eciPos.eciToECEF(jd);
-    // TODO Project ECEF to WGS84.
+    const latLng = ecefPos.ecefToWGS84();
 
     // console.log(jd, radToDeg(gecPos.lon) % 360, normalizeAngle(radToDeg(gecPos.lat)));
-    const latLng = {
-      lng: normalizeAngle(radToDeg(ecefPos.ra)), 
-      lat: radToDeg(ecefPos.dec)
-    };
     if (i == midpoint) {
       gt.pastLine.push(latLng);
       gt.futureLine.push(latLng);

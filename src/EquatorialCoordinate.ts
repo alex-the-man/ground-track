@@ -1,5 +1,9 @@
-import { degToRad } from './MathUtils';
+import { degToRad, normalizeAngle, radToDeg } from './MathUtils';
 import { j2000jd } from './JulianUtils';
+
+import LatLngLiteral = google.maps.LatLngLiteral
+
+const earthFlatteningFactor = 1 / 298.257223563; // WGS84
 
 // Return time, not angle.
 function greenwichSideralTime(jde: number): number {
@@ -21,5 +25,15 @@ export default class EquatorialCoordinate {
   eciToECEF(jde: number): EquatorialCoordinate {
     const ra = this.ra - degToRad(greenwichSideralTime(jde) * 15);
     return new EquatorialCoordinate(ra, this.dec, this.r);
+  }
+
+  ecefToWGS84(): LatLngLiteral {
+    const flatteningRatio = (1 - earthFlatteningFactor);
+    const lat = Math.atan2(Math.tan(this.dec) / flatteningRatio / flatteningRatio, Math.cos(this.dec));
+
+    return {
+      lat: normalizeAngle(radToDeg(lat)),
+      lng: radToDeg(this.ra)
+    }
   }
 }
