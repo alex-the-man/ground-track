@@ -9,7 +9,9 @@ import GMap = google.maps;
 
 interface MapMarkerProps {
   pos: GMap.LatLngLiteral;
-  title: string;
+  title?: string;
+  iconUrl?: string;
+  iconSize?: number;
 }
 
 interface MapMarkeState {
@@ -44,9 +46,15 @@ export default class MapMarker extends React.Component<MapMarkerProps, MapMarkeS
 
   render(): any {
     if (this.state.marker) {
+      const iconSize = this.props.iconSize;
       this.state.marker.setOptions({
         position: this.props.pos,
-        title: this.props.title
+        title: this.props.title,
+        icon: {
+          anchor: iconSize ? new GMap.Point(0, iconSize / 2) : null,
+          scaledSize: iconSize ? new GMap.Size(iconSize, iconSize, "px", "px") : null,
+          url: this.props.iconUrl
+        }
       });
     }
     return null;

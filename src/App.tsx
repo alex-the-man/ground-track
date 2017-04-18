@@ -12,6 +12,8 @@ import MapMarker from "./MapMarker";
 
 import LatLngLiteral = google.maps.LatLngLiteral
 
+const moonIconUrl = require("../assets/moon.png");
+
 class GroundTrack {
   pastLine: Array<LatLngLiteral> = [];
   futureLine: Array<LatLngLiteral> = [];
@@ -68,7 +70,7 @@ class App extends React.Component<undefined, AppState> {
     this.timerId = window.setInterval(
       () => {
         this.setState({
-          now: this.state.now + 60 * 1000 * 60
+          now: this.state.now + 1000 * 60 // * 60
         });
       }, 100);
   }
@@ -83,7 +85,7 @@ class App extends React.Component<undefined, AppState> {
     const nowJd = unixTimestampToJulianDate(this.state.now / 1000);
     const periodInJulianDay = 2;
 
-    const gt = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 24);
+    const gt = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 180);
 
     const infoBoxStyle: React.CSSProperties = {
       background: "#CCC",
@@ -99,7 +101,7 @@ class App extends React.Component<undefined, AppState> {
       <Map>
         <div style={infoBoxStyle}>{ new Date(this.state.now).toUTCString() }</div>
         <MapPolyline latLngs={gt.pastLine} color="#AAA" opacity={0.9}/>
-        <MapMarker pos={gt.moonPos} title={gt.moonPos.lat.toString() + ", " + gt.moonPos.lng.toString()}/>
+        <MapMarker pos={gt.moonPos} title={gt.moonPos.lat.toString() + ", " + gt.moonPos.lng.toString()} iconUrl={moonIconUrl} iconSize={40} />
         <MapPolyline latLngs={gt.futureLine} opacity={0.9}/>
       </Map>
     );

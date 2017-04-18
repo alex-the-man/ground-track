@@ -14,7 +14,8 @@ var config = {
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" }
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      { test: /\.(svg|png)?$/, loader: "file-loader" }
     ]
   },
 

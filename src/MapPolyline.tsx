@@ -9,7 +9,6 @@ import GMap = google.maps;
 
 interface MapPolylineProps {
   color?: string;
-  dashedLine?: boolean;
   latLngs: Array<GMap.LatLngLiteral>;
   opacity?: number;
 }
@@ -23,16 +22,13 @@ export default class MapPolyline extends React.Component<MapPolylineProps, MapPo
     map: PropTypes.any
   }
 
-  static defaultProps: MapPolylineProps = {
+  static defaultProps = {
     color: "#FFF",
-    dashedLine: false,
-    latLngs: null,
     opacity: 1
   }
 
   static propTypes = {
     color: PropTypes.string,
-    dashedLine: PropTypes.bool,
     latLngs: PropTypes.any.isRequired,
     opacity: PropTypes.number,
   }
@@ -65,24 +61,6 @@ export default class MapPolyline extends React.Component<MapPolylineProps, MapPo
         strokeColor: this.props.color,        
         strokeOpacity: this.props.opacity
       };
-
-      if (this.props.dashedLine) {
-        const lineSymbol = {
-          strokeWeight: 3,
-          strokeOpacity: this.props.opacity,
-          path: "M 0,-5 0,5"
-        };
-
-        _.extend(polylineOptions, {
-          icons: [{
-            icon: lineSymbol,
-            offset: "0",
-            repeat: "20px"
-          }],
-          strokeOpacity: 0,
-          strokeWeight: 1
-        });
-      }
       this.state.polyline.setOptions(polylineOptions);
     }
     return null;
