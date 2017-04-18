@@ -40,7 +40,7 @@ export default class MapPolyline extends React.Component<MapPolylineProps, undef
       var lineSymbol = {
         strokeWeight: 3,
         strokeOpacity: 1,
-        path: "M 0,-5 0,1"
+        path: "M 0,-5 0,5"
       };
 
        _.extend(ploylineOptions, {

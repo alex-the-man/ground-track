@@ -12,19 +12,18 @@ import MapMarker from "./MapMarker";
 
 import LatLngLiteral = google.maps.LatLngLiteral
 
-const App = () => {
-  var moon = new Moon();
+class GroundTrack {
+  pastLine: Array<LatLngLiteral> = [];
+  futureLine: Array<LatLngLiteral> = [];
+  moonPos: LatLngLiteral;
+}
 
-  var pastLine: Array<LatLngLiteral> = [];
-  var futureLine: Array<LatLngLiteral> = [];
-  var moonPos: LatLngLiteral = null;
+function calculateGroundTrack(moon: Moon, midpointJd: number, period: number, segments: number): GroundTrack {
+  var midpoint = Math.floor(segments / 2);  
+  var gt: GroundTrack = new GroundTrack();
 
-  // var nowJd = JulianUtils.j2000;
-  // var nowJd = 2457858.5; // 2457858.55833;// 2457858.55384;
-  var nowJd = unixTimestampToJulianDate(Date.now() / 1000);
-
-  for (var i = -12; i <= 12; i++) {
-    var jd = i / 24 + nowJd;
+  for (var i = 0; i <= segments; i++) {
+    var jd = (i - midpoint) / segments * period + midpointJd;
     var gecPos = moon.pos(jd);
     var eciPos = gecPos.toECI();
     var ecefPos = eciPos.eciToECEF(jd);
@@ -35,22 +34,36 @@ const App = () => {
       lng: normalizeAngle(radToDeg(ecefPos.ra)), 
       lat: radToDeg(ecefPos.dec)
     };
-    if (i == 0) {
-      pastLine.push(latLng);
-      futureLine.push(latLng);
-      moonPos = latLng;
-    } else if (i > 0) {
-      futureLine.push(latLng);
+    if (i == midpoint) {
+      gt.pastLine.push(latLng);
+      gt.futureLine.push(latLng);
+      gt.moonPos = latLng;
+    } else if (i > midpoint) {
+      gt.futureLine.push(latLng);
     } else {
-      pastLine.push(latLng);
+      gt.pastLine.push(latLng);
     }
   }
-  
+
+  return gt;
+}
+
+const App = () => {
+  var moon = new Moon();
+
+  // var nowJd = JulianUtils.j2000;
+  // var nowJd = 2457858.5; // 2457858.55833;// 2457858.55384;
+  var nowJd = unixTimestampToJulianDate(Date.now() / 1000);
+  var period = 1; // A Julian day.
+  var segments = 24; // A sample point per hour.
+
+  var gt = calculateGroundTrack(moon, nowJd, period, segments);
+
   return (
     <Map>
-      <MapPolyline latLngs={pastLine}/>
-      <MapMarker pos={moonPos} title={moonPos.lat.toString() + ", " + moonPos.lng.toString()}/>
-      <MapPolyline latLngs={futureLine} dashedLine={true}/>
+      <MapPolyline latLngs={gt.pastLine}/>
+      <MapMarker pos={gt.moonPos} title={gt.moonPos.lat.toString() + ", " + gt.moonPos.lng.toString()}/>
+      <MapPolyline latLngs={gt.futureLine} dashedLine={true}/>
     </Map>
   );
 };
