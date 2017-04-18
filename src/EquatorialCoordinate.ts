@@ -2,8 +2,8 @@ import { degToRad } from './MathUtils';
 import { j2000jd } from './JulianUtils';
 
 // Return time, not angle.
-function greenwichSideralTime(jd: number): number {
-  return 18.697374558 + 24.06570982441908 * j2000jd(jd);
+function greenwichSideralTime(jde: number): number {
+  return 18.697374558 + 24.06570982441908 * j2000jd(jde);
 }
 
 export default class EquatorialCoordinate {
@@ -18,8 +18,8 @@ export default class EquatorialCoordinate {
   }
 
   // Assume current ra & dec are in ECI.
-  eciToECEF(jd: number): EquatorialCoordinate {
-    const ra = this.ra - degToRad(greenwichSideralTime(jd) * 15);
+  eciToECEF(jde: number): EquatorialCoordinate {
+    const ra = this.ra - degToRad(greenwichSideralTime(jde) * 15);
     return new EquatorialCoordinate(ra, this.dec, this.r);
   }
 }

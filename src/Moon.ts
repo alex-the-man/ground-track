@@ -23,26 +23,26 @@ const dist0 = 385001;
 const dist1 = -20905;
 
 export default class Moon {
-  private L(jd: number): number {
-    const jd2000 = j2000jd(jd);
+  private L(jde: number): number {
+    const jd2000 = j2000jd(jde);
     return l0 + l1 * jd2000 + l2 * jd2000 * jd2000;
   }
   
-  private M(jd: number): number {
-    const jd2000 = j2000jd(jd);
+  private M(jde: number): number {
+    const jd2000 = j2000jd(jde);
     return m0 + m1 * jd2000 + m2 * jd2000 * jd2000;
   }
   
-  private F(jd: number): number {
-    const jd2000 = j2000jd(jd);
+  private F(jde: number): number {
+    const jd2000 = j2000jd(jde);
     return f0 + f1 * jd2000 + f2 * jd2000 * jd2000;
   }
 
   // Return position in geocentric ecliptic coordinates.
-  pos(jd: number): EclipticSphericalCoordinate {
-    const l = this.L(jd);
-    const m = this.M(jd);
-    const f = this.F(jd);
+  pos(jde: number): EclipticSphericalCoordinate {
+    const l = this.L(jde);
+    const m = this.M(jde);
+    const f = this.F(jde);
 
     const lon = l + lon1 * Math.sin(m);
     const lat = lat1 * Math.sin(f);
