@@ -1,21 +1,20 @@
 var path = require("path");
 
 var config = {
-  entry: ["./src/App.tsx"],
+  entry: ["./src/components/App.tsx"],
 
   output: {
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname, "dist"),
     filename: "bundle.js"
   },
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js", "html"]
+    extensions: [".ts", ".tsx", ".js"]
   },
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
-      { test: /\.(svg|png)?$/, loader: "file-loader" }
+      { test: /\.tsx?$/, loader: "ts-loader" }
     ]
   },
 

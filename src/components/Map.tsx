@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 // Can't do import without .d.ts. See https://github.com/Microsoft/TypeScript/issues/15031
 const PropTypes = require("prop-types");
 
-import EquatorialCoordinate from "./EquatorialCoordinate"
+import EquatorialCoordinate from "../astronomy/EquatorialCoordinate"
 
 import GMap = google.maps;
 
