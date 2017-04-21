@@ -6,6 +6,10 @@ export function radToDeg(r: number): number {
   return r * 180.0 / Math.PI;
 }
 
-export function normalizeAngle(deg: number): number {
+export function normalizeDegree(deg: number): number {
   return deg % 360;
+}
+
+export function normalizeRadian(rad: number): number {
+  return rad % (2 * Math.PI);
 }

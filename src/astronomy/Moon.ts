@@ -1,5 +1,5 @@
 import { j2000jd } from './JulianUtils'
-import { degToRad } from './MathUtils'
+import { degToRad, normalizeRadian } from './MathUtils'
 import EclipticSphericalCoordinate from './EclipticSphericalCoordinate'
 
 // http://www.geoastro.de/moonmotion/index.html
@@ -44,8 +44,8 @@ export default class Moon {
     const m = this.M(jde);
     const f = this.F(jde);
 
-    const lon = l + lon1 * Math.sin(m);
-    const lat = lat1 * Math.sin(f);
+    const lon = normalizeRadian(l + lon1 * Math.sin(m));
+    const lat = normalizeRadian(lat1 * Math.sin(f));
     const dist = dist0 + dist1 * Math.cos(m);
     return new EclipticSphericalCoordinate(lon, lat, dist);
   }

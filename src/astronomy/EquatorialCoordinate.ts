@@ -1,4 +1,4 @@
-import { degToRad, normalizeAngle, radToDeg } from './MathUtils';
+import { degToRad, normalizeDegree, radToDeg } from './MathUtils';
 import { j2000jd } from './JulianUtils';
 
 import LatLngLiteral = google.maps.LatLngLiteral
@@ -32,7 +32,7 @@ export default class EquatorialCoordinate {
     const lat = Math.atan2(Math.tan(this.dec) / flatteningRatio / flatteningRatio, Math.cos(this.dec));
 
     return {
-      lat: normalizeAngle(radToDeg(lat)),
+      lat: normalizeDegree(radToDeg(lat)),
       lng: radToDeg(this.ra)
     }
   }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { radToDeg, normalizeAngle } from "../astronomy/MathUtils";
+import { radToDeg, normalizeDegree } from "../astronomy/MathUtils";
 import { j2000, unixTimestampToJulianDate } from "../astronomy/JulianUtils";
 import Moon from "../astronomy/Moon";
 import MapPolyline from "./MapPolyline";

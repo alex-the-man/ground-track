@@ -6,8 +6,9 @@ Moon position is computed using formula described [here](http://aa.quae.nl/en/re
 # Build
 ```
 npm install
-npm build
+npm run build
+npm run test
 ```
 
 # Run
-Open `index.html` under `build/`.
+Open `index.html` under `dist/`.
