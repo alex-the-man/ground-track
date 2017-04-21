@@ -1,4 +1,3 @@
-import * as _ from "underscore";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 
