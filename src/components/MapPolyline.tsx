@@ -1,7 +1,7 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 
-// Can"t do import without .d.ts. See https://github.com/Microsoft/TypeScript/issues/15031
+// Can't do import without .d.ts. See https://github.com/Microsoft/TypeScript/issues/15031
 const PropTypes = require("prop-types");
 
 import GMap = google.maps;
@@ -43,8 +43,7 @@ export default class MapPolyline extends React.Component<MapPolylineProps, MapPo
   componentDidMount() {
     this.setState({ 
       polyline: new GMap.Polyline({
-        map: this.context.map,
-        strokeColor: "#FFF"
+        map: this.context.map
       })
     });
   }

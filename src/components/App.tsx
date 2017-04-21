@@ -27,7 +27,6 @@ function calculateGroundTrack(moon: Moon, midpointJd: number, periodInJulianDay:
     const ecefPos = eciPos.eciToECEF(jd);
     const latLng = ecefPos.ecefToWGS84();
 
-    // console.log(jd, radToDeg(gecPos.lon) % 360, normalizeAngle(radToDeg(gecPos.lat)));
     if (i == midpoint) {
       gt.pastLine.push(latLng);
       gt.futureLine.push(latLng);
@@ -72,12 +71,10 @@ class App extends React.Component<undefined, AppState> {
   }
 
   render(): any {
-    // var nowJd = JulianUtils.j2000;
-    // var nowJd = 2457858.5; // 2457858.55833;// 2457858.55384;
     const nowJd = unixTimestampToJulianDate(this.state.now / 1000);
-    const periodInJulianDay = 2;
+    const periodInJulianDay = 1.5;
 
-    const gt = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 48);
+    const gt = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 64);
 
     const infoBoxStyle: React.CSSProperties = {
       background: "#CCC",

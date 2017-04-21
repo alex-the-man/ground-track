@@ -1,7 +1,7 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 
-// Can"t do import without .d.ts. See https://github.com/Microsoft/TypeScript/issues/15031
+// Can't do import without .d.ts. See https://github.com/Microsoft/TypeScript/issues/15031
 const PropTypes = require("prop-types");
 
 import GMap = google.maps;
@@ -51,7 +51,7 @@ export default class MapMarker extends React.Component<MapMarkerProps, MapMarkeS
         title: this.props.title,
         icon: {
           anchor: iconSize ? new GMap.Point(0, iconSize / 2) : null,
-          scaledSize: iconSize ? new GMap.Size(iconSize, iconSize, "px", "px") : null,
+          scaledSize: iconSize ? new GMap.Size(iconSize, iconSize) : null,
           url: this.props.iconUrl
         }
       });
