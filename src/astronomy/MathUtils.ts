@@ -13,3 +13,8 @@ export function normalizeDegree(deg: number): number {
 export function normalizeRadian(rad: number): number {
   return rad % (2 * Math.PI);
 }
+
+export function normalizeEclipticLon(rad: number): number {
+  rad = normalizeRadian(rad);
+  return (rad >= 0) ? rad : 2 * Math.PI + rad;
+}
