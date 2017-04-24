@@ -61,7 +61,7 @@ class App extends React.Component<undefined, AppState> {
     this.timerId = window.setInterval(
       () => {
         this.setState({
-          now: this.state.now + 1000 * 60 // * 60
+          now: this.state.now + 1000 * 60 * 60
         });
       }, 100);
   }
@@ -76,19 +76,9 @@ class App extends React.Component<undefined, AppState> {
 
     const gt = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 64);
 
-    const infoBoxStyle: React.CSSProperties = {
-      background: "#CCC",
-      opacity: 0.7,
-      padding: "1px",
-      position: "absolute",
-      right: "0px",
-      top: "0px",
-      zIndex: 10
-    };
-
     return (
       <Map>
-        <div style={infoBoxStyle}>{ new Date(this.state.now).toUTCString() }</div>
+        <div className="info-box">{ new Date(this.state.now).toUTCString() }</div>
         <MapPolyline latLngs={gt.pastLine} color="#AAA" opacity={0.9}/>
         <MapMarker pos={gt.moonPos} title={gt.moonPos.lat.toString() + ", " + gt.moonPos.lng.toString()} iconUrl="moon.png" iconSize={40} />
         <MapPolyline latLngs={gt.futureLine} opacity={0.9}/>
