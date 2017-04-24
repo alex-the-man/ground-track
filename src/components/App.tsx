@@ -61,7 +61,7 @@ class App extends React.Component<undefined, AppState> {
     this.timerId = window.setInterval(
       () => {
         this.setState({
-          now: this.state.now + 1000 * 60 * 60
+          now: this.state.now + 1000 * 60 // * 60
         });
       }, 100);
   }

@@ -47,8 +47,10 @@ describe("Moon", () => {
       latMaxError = Math.max(latMaxError, latError);
       lonStdDev += lonError * lonError;
       latStdDev += latError * latError;
-      angleShouldBeCloseTo(p.lon, testEntry.lon, 1e-1, "Lon is too inaccurate at " + datetimeInUTC);
-      angleShouldBeCloseTo(p.lat, testEntry.lat, 1e-3, "Lat is too inaccurate at " + datetimeInUTC);
+      // Lon accuracy: 1.5 arcminutes.
+      angleShouldBeCloseTo(p.lon, testEntry.lon, degToRad(1.5 / 60), "Lon is too inaccurate at " + datetimeInUTC);
+      // Lat accuracy: 30 arcseconds.
+      angleShouldBeCloseTo(p.lat, testEntry.lat, degToRad(30 / 60 / 60), "Lat is too inaccurate at " + datetimeInUTC);
     }
     lonStdDev = Math.sqrt(lonStdDev / eclipticTestData.length);
     latStdDev = Math.sqrt(latStdDev / eclipticTestData.length);
