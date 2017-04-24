@@ -1,4 +1,4 @@
-import { degToRad, normalizeDegree, radToDeg } from './MathUtils';
+import { degToRad, normalizeDegree, normalizeGeoLon, radToDeg } from './MathUtils';
 import { j2000jd } from './JulianUtils';
 
 import LatLngLiteral = google.maps.LatLngLiteral
@@ -33,7 +33,7 @@ export default class EquatorialCoordinate {
 
     return {
       lat: normalizeDegree(radToDeg(lat)),
-      lng: radToDeg(this.ra)
+      lng: normalizeGeoLon(radToDeg(this.ra))
     }
   }
 }
