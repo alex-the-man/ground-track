@@ -1,6 +1,7 @@
 import { j2000jd } from './JulianUtils'
 import { jdeHorner2, jdeHornerDeg1, jdeHornerDeg2, jdeHornerDeg3, jdeHornerDeg4 } from './Horner'
 import { degToRad, normalizeEclipticLon, normalizeRadian } from './MathUtils'
+import CelestialObject from './CelestialObject'
 import EclipticSphericalCoordinate from './EclipticSphericalCoordinate'
 
 const sin = Math.sin, cos = Math.cos;
@@ -260,7 +261,7 @@ function periodicTerms(jde: number, l_: number): [number, number, number] {
   return [lon * 1e-6, lat * 1e-6, r * 1e-3];
 }
 
-export default class Moon {
+export default class Moon implements CelestialObject {
   // Return position in ECLIPJ2000.
   pos(jde: number): EclipticSphericalCoordinate {
     const l_ = l(jde);
