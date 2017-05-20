@@ -13,11 +13,11 @@ interface MapMarkerProps {
   iconSize?: number;
 }
 
-interface MapMarkeState {
+interface MapMarkerState {
   marker: GMap.Marker;
 }
 
-export default class MapMarker extends React.Component<MapMarkerProps, MapMarkeState> {
+export default class MapMarker extends React.Component<MapMarkerProps, MapMarkerState> {
   static contextTypes = {
     map: PropTypes.any
   }

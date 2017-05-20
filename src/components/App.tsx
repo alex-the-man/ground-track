@@ -6,6 +6,7 @@ import { j2000, unixTimestampToJulianDate } from "../astronomy/JulianUtils";
 import CelestialObject from "../astronomy/CelestialObject";
 import Sun from "../astronomy/Sun";
 import Moon from "../astronomy/Moon";
+import MapCircle from "./MapCircle";
 import MapPolyline from "./MapPolyline";
 import MapMarker from "./MapMarker";
 import Map from "./Map";
@@ -86,7 +87,7 @@ class App extends React.Component<undefined, AppState> {
     this.timerId = window.setInterval(
       () => {
         this.setState({
-          now: this.state.now + 1000 * 60 // * 60 // * 30
+          now: this.state.now + 1000 * 60 // * 60 * 30
         });
       }, 100);
   }
@@ -101,10 +102,12 @@ class App extends React.Component<undefined, AppState> {
 
     const sunTrack = calculateGroundTrack(this.sun, nowJd, periodInJulianDay, 64);
     const moonTrack = calculateGroundTrack(this.moon, nowJd, periodInJulianDay, 64);
+    const nightOverlayCenter = {lat: -sunTrack.position.lat, lng: sunTrack.position.lng + 180};
 
     return (
       <Map>
         <div className="info-box">{ new Date(this.state.now).toUTCString() }</div>
+        <MapCircle center={nightOverlayCenter} radius={6371e3 * Math.PI * 0.5}/>
         <MapGroundTrack groundTrack={sunTrack} iconUrl="sun.png" iconSize={40} />
         <MapGroundTrack groundTrack={moonTrack} iconUrl="moon.png" iconSize={26} />
       </Map>
