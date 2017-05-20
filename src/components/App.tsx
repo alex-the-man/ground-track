@@ -108,8 +108,8 @@ class App extends React.Component<undefined, AppState> {
       <Map>
         <div className="info-box">{ new Date(this.state.now).toUTCString() }</div>
         <MapCircle center={nightOverlayCenter} radius={6371e3 * Math.PI * 0.5}/>
-        <MapGroundTrack groundTrack={sunTrack} iconUrl="sun.png" iconSize={40} />
         <MapGroundTrack groundTrack={moonTrack} iconUrl="moon.png" iconSize={26} />
+        <MapGroundTrack groundTrack={sunTrack} iconUrl="sun.png" iconSize={40} />
       </Map>
     );
   }
