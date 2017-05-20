@@ -105,8 +105,8 @@ class App extends React.Component<undefined, AppState> {
     return (
       <Map>
         <div className="info-box">{ new Date(this.state.now).toUTCString() }</div>
-        <MapGroundTrack groundTrack={sunTrack} />
-        <MapGroundTrack groundTrack={moonTrack} iconUrl="moon.png" iconSize={40} />
+        <MapGroundTrack groundTrack={sunTrack} iconUrl="sun.png" iconSize={40} />
+        <MapGroundTrack groundTrack={moonTrack} iconUrl="moon.png" iconSize={26} />
       </Map>
     );
   }
