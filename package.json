@@ -2,6 +2,7 @@
   "name": "ground-track",
   "scripts": {
     "build": "webpack",
+    "build-hot": "webpack-dev-server --content-base dist",
     "test": "node_modules/mocha/bin/mocha --opts mocha.opts"
   },
   "dependencies": {

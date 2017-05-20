@@ -1,59 +1,38 @@
 import { j2000jd } from './JulianUtils'
+import { jdeHorner2, jdeHornerDeg1, jdeHornerDeg2, jdeHornerDeg3, jdeHornerDeg4 } from './Horner'
 import { degToRad, normalizeEclipticLon, normalizeRadian } from './MathUtils'
 import EclipticSphericalCoordinate from './EclipticSphericalCoordinate'
 
 const sin = Math.sin, cos = Math.cos;
 
-// Horner's method to calculate polynomial.
-function horner(a0: number, a1: number, a2: number, a3: number, a4: number, jde: number): number {
-  const t = j2000jd(jde) / 36525; // Convert Julian centuries to Julian day.
-  return a0 + t * (a1 + t * (a2 + t * (a3 + t * a4)));
-}
-
-// Convert angles from degree to radian.
-function meeusHorner4(a0: number, a1: number, a2: number, a3: number, a4: number, jde: number): number {
-  return horner(degToRad(a0), degToRad(a1), degToRad(a2), degToRad(a3), degToRad(a4), jde);
-}
-
-function meeusHorner3(a0: number, a1: number, a2: number, a3: number, jde: number): number {
-  return meeusHorner4(a0, a1, a2, a3, 0, jde);
-}
-
-function meeusHorner2(a0: number, a1: number, a2: number, jde: number): number {
-  return meeusHorner4(a0, a1, a2, 0, 0, jde);
-}
-
-function meeusHorner1(a0: number, a1: number, jde: number): number {
-  return meeusHorner4(a0, a1, 0, 0, 0, jde);
-}
-
 // Astronomical Algorithms, Second Edition page 338.
 // Moon's mean longitude (47.1): L'
 const l: (jde: number) => number =
-  meeusHorner4.bind(this, 218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000);
+  jdeHornerDeg4(218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000);
 // Moon's mean elongation (47.2): D
 const d: (jde: number) => number =
-  meeusHorner4.bind(this, 297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000);
+  jdeHornerDeg4(297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000);
 // Sun's mean anomaly (47.3): M
 const sunM: (jde: number) => number =
-  meeusHorner3.bind(this, 357.5291092, 35999.0502909, -0.0001536, 1 / 24490000);
+  jdeHornerDeg3(357.5291092, 35999.0502909, -0.0001536, 1 / 24490000);
 // Moon's mean anomaly (47.4): M'
 const m: (jde: number) => number =
-  meeusHorner4.bind(this, 134.9633964, 477198.8675055, 0.0087414, 1 / 69699, -1 / 14712000);
+  jdeHornerDeg4(134.9633964, 477198.8675055, 0.0087414, 1 / 69699, -1 / 14712000);
 // Moon's argument of latitude (47.5): F
 const f: (jde: number) => number =
-  meeusHorner4.bind(this, 93.2720950, 483202.0175233, -0.0036539, -1 / 3526000, 1 / 863310000);
+  jdeHornerDeg4(93.2720950, 483202.0175233, -0.0036539, -1 / 3526000, 1 / 863310000);
 
-const a1: (jde: number) => number = meeusHorner1.bind(this, 119.75, 131.849);
-const a2: (jde: number) => number = meeusHorner1.bind(this, 53.09, 479264.290);
-const a3: (jde: number) => number = meeusHorner1.bind(this, 313.45, 481266.484);
+const a1: (jde: number) => number = jdeHornerDeg1(119.75, 131.849);
+const a2: (jde: number) => number = jdeHornerDeg1(53.09, 479264.290);
+const a3: (jde: number) => number = jdeHornerDeg1(313.45, 481266.484);
 
 // 47.6
-const e: (jde: number) => number = horner.bind(this, 1, -0.002516, -0.0000074, 0, 0);
+const e: (jde: number) => number = jdeHorner2(1, -0.002516, -0.0000074);
 
 // Earth's precession. http://www.stjarnhimlen.se/comp/ppcomp.html#8
+const p0 =  degToRad(-3.82394E-5);
 function p(jde: number): number {
-  return degToRad(3.82394E-5) * -j2000jd(jde);
+  return p0 * j2000jd(jde);
 }
 
 // Table 47.A.
