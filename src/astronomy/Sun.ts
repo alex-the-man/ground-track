@@ -4,6 +4,7 @@ import { degToRad, normalizeEclipticLon } from './MathUtils'
 import CelestialObject from './CelestialObject'
 import EclipticSphericalCoordinate from './EclipticSphericalCoordinate'
 
+const cos = Math.cos;
 const sin = Math.sin;
 
 // Astronomical Algorithms, Second Edition page 163.
@@ -20,8 +21,7 @@ const e: (jde: number) => number = jdeHorner2(0.016708634, -0.000042037, -0.0000
 const c0 = jdeHornerDeg2(1.914602, -0.004817, -0.000014);
 const c1 = jdeHornerDeg1(0.019993, -0.000101);
 const c2term = degToRad(0.000289);
-function c(jde: number): number {
-  const m_ = m(jde);
+function c(jde: number, m_: number): number {
   return c0(jde) * sin(m_) + c1(jde) * sin(2 * m_) + c2term * sin(3 * m_);
 }
 
@@ -38,9 +38,14 @@ const lonOfAscNode: (jde: number) => number = jdeHornerDeg1(125.04, -1934.136);
 export default class Sun implements CelestialObject {
   // Return position in ECLIPJ2000.
   pos(jde: number): EclipticSphericalCoordinate {
-    const trueLon = l(jde) + c(jde) + p(jde); // True longitude
-    const v =  m(jde) + c(jde); // True anomaly
+    const m_ = m(jde);
+    const c_ = c(jde, m_);
+    const trueLon = l(jde) + c_ + p(jde); // True longitude
     const lon = trueLon - lon0 - lon1 * sin(lonOfAscNode(jde));
-    return new EclipticSphericalCoordinate(normalizeEclipticLon(lon), 0, 1);
+    const v =  m_ + c_; // True anomaly
+    const e_ = e(jde);
+    const rAU = 1.000001018 * (1 - e_ * e_) / (1 + e_ * cos(v)); // Sun's radius vector (25.5)
+    const rKM = rAU * 149598e3;
+    return new EclipticSphericalCoordinate(normalizeEclipticLon(lon), 0, rKM);
   }
 }

@@ -12,7 +12,7 @@
     "@types/react-dom": "^0.14.23",
     "prop-types": "^15.5.8",
     "ts-loader": "^2.0.3",
-    "typescript": "^2.2.2",
+    "typescript": "^2.4.1",
     "webpack": "^2.4.1"
   },
   "devDependencies": {

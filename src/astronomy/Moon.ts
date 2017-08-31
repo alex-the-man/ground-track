@@ -268,7 +268,7 @@ export default class Moon implements CelestialObject {
     const terms = periodicTerms(jde, l_);
     const lon = l_ + terms[0] + p(jde); // Add precession to convert "equinox of date" to J2000 standard equinox.
     const lat = terms[1];
-    const r = 385000.56 + terms[2];
+    const r = 385000.56 + terms[2]; // In km
     return new EclipticSphericalCoordinate(normalizeEclipticLon(lon), normalizeRadian(lat), r);
   }
 }
