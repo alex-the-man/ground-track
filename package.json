@@ -7,9 +7,11 @@
   },
   "dependencies": {
     "@types/googlemaps": "^3.26.8",
+    "@types/mathjs": "0.0.35",
     "@types/node": "^7.0.12",
     "@types/react": "^15.0.21",
     "@types/react-dom": "^0.14.23",
+    "mathjs": "^3.16.3",
     "prop-types": "^15.5.8",
     "ts-loader": "^2.0.3",
     "typescript": "^2.4.1",

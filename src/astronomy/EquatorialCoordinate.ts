@@ -36,4 +36,11 @@ export default class EquatorialCoordinate {
       lng: normalizeGeoLon(radToDeg(this.ra))
     }
   }
+
+  toLatLng(): LatLngLiteral {
+    return {
+      lat: normalizeDegree(radToDeg(this.dec)),
+      lng: normalizeGeoLon(radToDeg(this.ra))
+    }
+  }
 }

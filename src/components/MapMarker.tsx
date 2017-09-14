@@ -49,7 +49,7 @@ export default class MapMarker extends React.Component<MapMarkerProps, MapMarker
       this.state.marker.setOptions({
         position: this.props.pos,
         title: this.props.title,
-        icon: {
+        icon: iconSize == null ? null : {
           anchor: iconSize ? new GMap.Point(iconSize / 2, iconSize / 2) : null,
           scaledSize: iconSize ? new GMap.Size(iconSize, iconSize) : null,
           url: this.props.iconUrl
