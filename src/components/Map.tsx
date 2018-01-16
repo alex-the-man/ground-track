@@ -31,8 +31,8 @@ export default class Map extends React.Component<undefined, MapState> {
 
   componentDidMount() {
     const mapOptions = {
-      center: new GMap.LatLng(0, 0),
-      zoom: 2
+      center: new GMap.LatLng(45.2101101,-122.4962282), // new GMap.LatLng(0, 0),
+      zoom: 7
     };
     this.setState({
       map: new GMap.Map(ReactDOM.findDOMNode(this.refs.mapContainer), mapOptions)
